@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bindingId="rainmachine"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<!-- The RainMachine Thing Type -->
+	<bridge-type id="rainmachine_bridge">
+		<label>RainMachine Bridge</label>
+		<description>This is a stand alone RainMachine device that provides irrigation control</description>
+
+		<channels>
+            <channel id="pausewatering" typeId="pausewatering"/>
+            <channel id="led_brightness" typeId="led_brightness"/>
+            <channel id="lcd_brightness" typeId="lcd_brightness"/>
+		</channels>
+
+		<config-description>
+			<parameter name="host" type="text" required="true">
+				<label>Host Name</label>
+				<description>The host name or IP address of the RainMachine Web API interface</description>
+				<context>network-address</context>
+			</parameter>
+			<parameter name="password" type="text">
+				<label>Password</label>
+				<description>The admin password used to access the Web API interface</description>
+				<default></default>
+			</parameter>
+			<parameter name="refresh" type="integer">
+				<label>Refresh</label>
+				<description>The period, in seconds, at which RainMachine status will be polled</description>
+				<default>60</default>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+    <thing-type id="rainmachine_zone">
+        <label>RainMachine Zone</label>
+        <description>This is an individual RainMachine zone</description>
+
+        <channels>
+            <channel id="active" typeId="zone_active"/>
+            <channel id="status" typeId="zone_state"/>
+            <channel id="remaining" typeId="zone_remaining"/>
+        </channels>
+
+        <config-description>
+            <parameter name="uid" type="integer" required="true">
+                <label>Zone UID</label>
+                <description>The unique ID of the zone</description>
+            </parameter>
+        </config-description>
+    </thing-type>
+
+    <channel-type id="rainsensor">
+        <item-type>Switch</item-type>
+        <label>Rain</label>
+        <description>Provides feedback on whether the RainMachine device has detected rain or not</description>
+        <category>Sensor</category>
+        <state readOnly="true"/>
+    </channel-type>
+
+    <channel-type id="pausewatering">
+        <item-type>Number</item-type>
+        <label>Pause Watering</label>
+        <description>Set the number of seconds to pause all watering, or 0 to resume</description>
+        <category>Time</category>
+    </channel-type>
+
+    <channel-type id="led_brightness">
+        <item-type>Dimmer</item-type>
+        <label>LED Brightness</label>
+        <description>Sets the LED brightness</description>
+        <category>Light</category>
+    </channel-type>
+
+    <channel-type id="lcd_brightness">
+        <item-type>Dimmer</item-type>
+        <label>LCD Brightness</label>
+        <description>Sets the LCD brightness</description>
+        <category>Light</category>
+    </channel-type>
+
+    <channel-type id="zone_state">
+        <item-type>Number</item-type>
+        <label>State</label>
+        <description>Watering status</description>
+        <category>Sensor</category>
+        <state readOnly="true">
+            <options>
+                <option value="0">Inactive</option>
+                <option value="1">Running</option>
+                <option value="2">Queued</option>
+            </options>
+        </state>
+    </channel-type>
+
+    <channel-type id="zone_active">
+        <item-type>Switch</item-type>
+        <label>Active</label>
+        <description>If zone is active (can be watered and added to watering programs</description>
+        <category>Sensor</category>
+    </channel-type>
+    
+    <channel-type id="zone_remaining">
+        <item-type>Number</item-type>
+        <label>Watering remaining</label>
+        <description>Remaining duration when watering has started</description>
+        <category>Sensor</category>
+    </channel-type>
+
+    <channel-type id="zone_cycles">
+        <item-type>Number</item-type>
+        <label>Cycles</label>
+        <description>Provides feedback on whether the RainMachine device has detected rain or not</description>
+        <category>Sensor</category>
+        <state readOnly="true"/>
+    </channel-type>
+
+    <channel-type id="zone_restriction">
+        <item-type>Number</item-type>
+        <label>Cycles</label>
+        <description>If the zone is in any current restrictions</description>
+        <category>Sensor</category>
+        <state readOnly="true"/>
+    </channel-type>
+
+</thing:thing-descriptions>
